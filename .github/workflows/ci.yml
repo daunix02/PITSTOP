@@ -1,0 +1,29 @@
+
+name: PitStop CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run unit tests
+        run: python -m unittest -v
+
+      - name: Validate Compose configuration
+        run: docker compose config -q
+
+      - name: Build container image
+        run: docker compose build
+
